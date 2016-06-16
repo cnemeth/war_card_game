@@ -2,6 +2,11 @@ require 'spec_helper'
 
 RSpec.describe Player do
   describe 'draw' do
+    it 'returns the last card from deck' do
+      player = Player.new
+      player.cards = %w(A B C D)
+      expect(player.draw).to eq 'D'
+    end
   end
 
   describe 'take_all' do
