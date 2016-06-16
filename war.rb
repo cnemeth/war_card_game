@@ -1,6 +1,4 @@
-#!/usr/local/bin ruby
 require File.expand_path(File.dirname(__FILE__) + '/player')
-require 'pry'
 
 class War
   attr_reader :deck, :deck_count, :num_players, :players, :total_cards_in_play
@@ -12,7 +10,7 @@ class War
     @deck = shuffle_deck
     @deck_count = deck.count
     @total_cards_in_play = num_players*(deck_count/num_players)
-    @current_score = {}
+    @current_score = initialize_current_score
     @score_board = initialize_score_board
     @round_winner = nil
     @winner = nil
@@ -27,7 +25,7 @@ class War
         double_draw
       else
         player = round_winner
-        puts "The round winner is #{player.id}"
+        puts "The round winner is #{player.object_id}"
         player.take_all(score_board.values.flatten)
         initialize_score_board
         initialize_current_score
@@ -39,7 +37,7 @@ class War
 
   private
 
-  def round_winner(current_score)
+  def round_winner
     find_player_by(current_score.max.first)
   end
 
@@ -65,12 +63,12 @@ class War
   end
 
   def update_score
-    score_board.merge(current){|key, first, second| first << second }
+    score_board.merge(current_score){|key, first, second| first << second }
   end
 
   def draw
     players.each do |player|
-      current_score[player.id] = player.draw
+      current_score[player.object_id] = player.draw
     end
     update_score
   end
@@ -102,21 +100,21 @@ class War
 
   def find_player_by(id)
     player = nil
-    players.map{|p| player = p if p.id == id}
+    players.map{|p| player = p if p.object_id == id}
 
     player
   end
 
   def initialize_current_score
     h = {}
-    players.map{|p| h[p.id] = []}
+    players.map{|p| h[p.object_id] = []}
 
     h
   end
 
   def initialize_score_board
     h = {}
-    players.map{|p| h[p.id] = []}
+    players.map{|p| h[p.object_id] = []}
 
     h
   end
