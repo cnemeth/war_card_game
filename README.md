@@ -1,5 +1,10 @@
-Rules of the Card Game War
+The Card Game War
 ==========================
+
+1. Introduction
+2. Rules for 2 players
+3. Rules for 3 or 4 players
+4. Playing the game
 
 Introduction
 ------------
@@ -10,7 +15,7 @@ higher in rank, and to follow the procedure of the game. The standard
 two-player game is described first, then the game for three or four
 players.
 
-War for two players
+Rules for 2 players
 -------------------
 
 In the basic game there are two players and you use a standard 52 card
@@ -61,7 +66,7 @@ Player B wins the war and takes all these seven cards (the five cards
 that A played and the two cards that B played) and the game continues
 normally.
 
-War for three or four players
+Rules for 3 or 4 players
 -----------------------------
 
 War can also be played by three or more players in much the same way.
@@ -79,6 +84,38 @@ highest cards.
 
 A player who runs out of cards drops out. The game goes on until only
 one player has cards, and that player wins.
+
+Playing the game
+----------------
+
+1. Clone repo, cd into project folder and start IRb
+
+```
+git clone git@github.com:cnemeth/war_card_game.git
+cd war_card_game
+bundle
+rake spec
+irb
+```
+
+2. Define number of players, 2 - 4, in a hash
+
+```
+player_count = {num_players: 2}
+```
+
+3. Initialize game
+
+```
+game = War.new(player_count)
+```
+
+4. Start the game
+
+```
+game.play
+```
+
 
 [1]: https://www.pagat.com/war/war.html
 [2]: https://en.wikipedia.org/wiki/War_(card_game)
