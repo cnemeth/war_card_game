@@ -5,6 +5,7 @@ The Card Game War
 2. Rules for 2 players
 3. Rules for 3 or 4 players
 4. Playing the game
+5. References
 
 Introduction
 ------------
@@ -116,6 +117,12 @@ game = War.new(player_count)
 game.play
 ```
 
+References
+----------
 
+```
 [1]: https://www.pagat.com/war/war.html
 [2]: https://en.wikipedia.org/wiki/War_(card_game)
+```
+
+EOF
