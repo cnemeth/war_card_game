@@ -1,7 +1,10 @@
+require 'faker'
+
 class Player
-  attr_accessor :cards
+  attr_accessor :name, :cards
 
   def initialize
+    @name = Faker::Name.first_name
     @cards = []
   end
 
