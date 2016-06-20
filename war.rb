@@ -1,7 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/player')
 require File.expand_path(File.dirname(__FILE__) + '/deck')
-require 'pry'
-require 'pry-byebug'
 
 class War
   attr_reader :deck_count, :players, :total_cards_in_play
