@@ -74,12 +74,12 @@ class War
       if player.cards.any?
         score_board[player.object_id] << player.draw
       else
-        drop_out(player)
+        drop(player)
       end
     end
   end
 
-  def drop_out(player)
+  def drop(player)
     id = player.object_id
     players.delete(player)
     score_board.delete(id)

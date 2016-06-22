@@ -4,7 +4,7 @@ class Deck
   attr_accessor :cards
 
   def initialize(args={})
-    @cards = populate_deck || []
+    @cards = populate_deck
   end
 
   def shuffle
