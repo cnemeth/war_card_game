@@ -1,10 +1,11 @@
 require 'faker'
 
 class Player
-  attr_accessor :name, :cards
+  attr_accessor :id, :name, :cards
 
   def initialize
-    @name = Faker::Name.first_name
+    @name = _name
+    @id = _id
     @cards = []
   end
 
@@ -15,5 +16,15 @@ class Player
   def take_all(items)
     cards.unshift(items)
     cards.flatten!
+  end
+
+  private
+
+  def _name
+    @name ||= Faker::Name.first_name
+  end
+
+  def _id
+    @id ||= object_id.to_s[-5..-1]
   end
 end
