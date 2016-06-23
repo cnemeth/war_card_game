@@ -55,12 +55,12 @@ class ScoreBoard
 
   def last_round_winner
     id = nil
-    board.each_pair{|k,v| id = k if v.last == winning_score}
+    board.each_pair{|k,v| id = k if v.last == last_round_winning_score}
     id
   end
 
   def last_round_winning_score
-    scores.max
+    last_scores.max
   end
 
   def duplicate_winning_scores_in_last_round?

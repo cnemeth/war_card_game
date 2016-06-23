@@ -6,7 +6,7 @@ require File.expand_path(File.dirname(__FILE__) + '/score_board')
 require 'pry'
 require 'awesome_print'
 
-puts 'In War'
+puts 'Let the game begin! ... Onwards and Upwards!'
 
 class War
   attr_reader :deck_count, :players, :total_cards_in_play
@@ -26,22 +26,32 @@ class War
     shuffle_deck
     deal_cards
     loop do
-      winner = game_over?
-      if winner
+      ap "+++[Beginning of loop] ..."
+
+      if game_over?
         puts "Game Over! The winner is #{players.first.name}"
         break
-      else
+      end
+
+      if player = player_any_no_card_left
+        ap "+++[Player #{player.name}] ... is being dropped"
+        drop(player)
+      end
+
+      ap "+++[New draw, face up] ..."
+      draw
+      if war?
+        puts 'War on!'
+        ap "+++[New draw, face down] ..."
         draw
-        if war?
-          puts 'War on!'
-          draw
-        else
-          player = round_winner
-          ap "+++[Adding cards to #{player.name}] ... #{score_board.scores}"
-          player.take_all(score_board.scores)
-          puts "The round winner is #{player.name}, with card: #{winning_score}"
-          @score_board = initialize_score_board
-        end
+      else
+        ap "+++[Players in system, in loop] ... #{players.map(&:id)}"
+        player = round_winner
+        ap "+++[Player #{player.name}] ... is the winner of the last round"
+        ap "+++[Adding cards to #{player.name}] ... #{score_board.scores}"
+        player.take_all(score_board.scores)
+        puts "The round winner is #{player.name}, with card: #{winning_score}"
+        @score_board = initialize_score_board
       end
     end
   end
@@ -50,7 +60,8 @@ class War
 
   def round_winner
     id = score_board.round_winner
-    find_player_by(id)
+    player = find_player_by(id)
+    player
   end
 
   def winning_score
@@ -62,30 +73,30 @@ class War
   end
 
   def game_over?
-    players.count == 1
+    players.count == 1 &&
+      players.first.cards.count == total_cards_in_play
+  end
+
+  def player_any_no_card_left
+    player = nil
+    players.each do |p|
+      player = p if p.cards.count == 0
+    end
+
+    player
   end
 
   def draw
     players.each do |player|
-      if player.cards.empty?
-        drop(player)
-      else
-        card = player.draw
-        if card.is_a?(Fixnum)
-          binding.pry
-          ap "+++[something is fucked up!"
-          ap "+++[#{player.name} drew card]: #{card.inspect}"
-        end
-        ap "+++[#{player.name} drew card]: #{card.name}"
-        score_board.add_score(player.id, card.rank)
-      end
+      card = player.draw
+      ap "+++[#{player.name} drew card]: #{card.name}"
+      score_board.add_score(player.id, card.rank)
     end
   end
 
   def drop(player)
-    ap "+++[Dropping #{player.name}] ... because this player has #{player.cards.count} cards"
     score_board.drop(player.id)
-    players.delete(player.id)
+    players.delete(player)
     @num_players -= 1 unless @num_players == 0
   end
 
@@ -117,7 +128,7 @@ class War
   end
 
   def initialize_score_board
-    @score_board ||= ScoreBoard.new(player_ids: players.map(&:id))
+    @score_board = ScoreBoard.new(player_ids: players.map(&:id))
   end
 end
 
