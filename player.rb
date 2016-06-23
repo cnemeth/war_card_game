@@ -1,3 +1,4 @@
+require File.expand_path(File.dirname(__FILE__) + '/card')
 require 'faker'
 
 class Player
@@ -14,11 +15,28 @@ class Player
   end
 
   def take_all(items)
-    cards.unshift(items)
-    cards.flatten!
+    arr = make_cards(items)
+    insert(arr)
   end
 
   private
+
+  def insert(arr)
+    cards.unshift(arr)
+    cards.flatten!
+  end
+
+  def make_cards(items)
+    arr = []
+    items.each do |item|
+      card = Card.make(item.to_i)
+      if card
+        arr << card
+      end
+    end
+
+    arr
+  end
 
   def _name
     @name ||= Faker::Name.first_name

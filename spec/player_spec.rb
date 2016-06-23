@@ -19,18 +19,23 @@ RSpec.describe Player do
 
   describe 'draw' do
     it 'returns the last card from deck' do
+      card1 = Card.new(name: 'Q', rank: 12)
+      card2 = Card.new(name: 'J', rank: 11)
+      card3 = Card.new(name: 'A', rank: 14)
       player = Player.new
-      player.cards = %w(A B C D)
-      expect(player.draw).to eq 'D'
+      player.cards = [card1, card2, card3]
+      expect(player.draw).to eq card3
     end
   end
 
   describe 'take_all' do
-    it 'add items to beginning of card stack' do
+    it 'add cards to beginning of the stack' do
+      card1 = Card.new(name: 'K', rank: 13)
+      card2 = Card.new(name: 'J', rank: 11)
       player = Player.new
-      player.cards = %w(C D)
-      player.take_all(['A', 'B'])
-      expect(player.cards).to eq %w(A B C D)
+      player.cards = [card1, card2]
+      player.take_all(['14', '9'])
+      expect(player.cards.map(&:name)).to eq %w(A 9 K J)
     end
   end
 end
