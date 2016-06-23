@@ -1,5 +1,12 @@
+#!/usr/bin/env ruby
+
 require File.expand_path(File.dirname(__FILE__) + '/player')
 require File.expand_path(File.dirname(__FILE__) + '/deck')
+require File.expand_path(File.dirname(__FILE__) + '/score_board')
+require 'pry'
+require 'awesome_print'
+
+puts 'In War'
 
 class War
   attr_reader :deck_count, :players, :total_cards_in_play
@@ -30,8 +37,9 @@ class War
           draw
         else
           player = round_winner
-          player.take_all(score_board.values.flatten)
-          puts "The round winner is #{player.name}, with score: #{winning_score}"
+          ap "+++[Adding cards to #{player.name}] ... #{score_board.scores}"
+          player.take_all(score_board.scores)
+          puts "The round winner is #{player.name}, with card: #{winning_score}"
           @score_board = initialize_score_board
         end
       end
@@ -41,28 +49,16 @@ class War
   private
 
   def round_winner
-    id = nil
-    score_board.each_pair{|k,v| id = k if v.last.rank == winning_score}
+    id = score_board.round_winner
     find_player_by(id)
   end
 
   def winning_score
-    score_board.values.map{|v| v.last.rank}.max
+    score_board.winning_score
   end
 
   def war?
-    scores = score_board.values.map{|v| v.last.rank if v.last.rank}
-
-    case scores.count
-    when 2
-      return scores.uniq.count == 1
-    when 3
-      return scores.uniq.count == 1 || scores.uniq.count == 2
-    when 4
-      return scores.uniq.count == 1 || scores.uniq.count == 2 || scores.uniq.count == 3
-    else
-      return false
-    end
+    score_board.war?
   end
 
   def game_over?
@@ -71,19 +67,26 @@ class War
 
   def draw
     players.each do |player|
-      if player.cards.any?
-        score_board[player.object_id] << player.draw
-      else
+      if player.cards.empty?
         drop(player)
+      else
+        card = player.draw
+        if card.is_a?(Fixnum)
+          binding.pry
+          ap "+++[something is fucked up!"
+          ap "+++[#{player.name} drew card]: #{card.inspect}"
+        end
+        ap "+++[#{player.name} drew card]: #{card.name}"
+        score_board.add_score(player.id, card.rank)
       end
     end
   end
 
   def drop(player)
-    id = player.object_id
-    players.delete(player)
-    score_board.delete(id)
-    @num_players -= 1
+    ap "+++[Dropping #{player.name}] ... because this player has #{player.cards.count} cards"
+    score_board.drop(player.id)
+    players.delete(player.id)
+    @num_players -= 1 unless @num_players == 0
   end
 
   def setup_players
@@ -108,15 +111,18 @@ class War
 
   def find_player_by(id)
     player = nil
-    players.map{|p| player = p if p.object_id == id}
+    players.map{|p| player = p if p.id == id}
 
     player
   end
 
   def initialize_score_board
-    h = {}
-    players.map{|p| h[p.object_id] = []}
-
-    h
+    @score_board ||= ScoreBoard.new(player_ids: players.map(&:id))
   end
+end
+
+ARGV.each do |v|
+  num_players = (2..4).include?(v.to_i) ? v.to_i : 2
+  game = War.new(num_players: num_players)
+  game.play
 end
