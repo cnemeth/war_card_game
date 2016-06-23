@@ -13,7 +13,7 @@ players.  The rules of the game can be found [here](https://www.pagat.com/war/wa
 Playing the game
 ----------------
 
-1. Clone repo, cd into project folder and run bundle install.
+1. Clone repo
 
 ```
 git clone git@github.com:cnemeth/war_card_game.git
