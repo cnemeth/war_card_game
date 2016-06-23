@@ -36,7 +36,7 @@ class ScoreBoard
   end
 
   def war?
-    equal_scores_in_last_round?
+    duplicate_winning_scores_in_last_round?
   end
 
   def round_winner
@@ -60,15 +60,23 @@ class ScoreBoard
   end
 
   def last_round_winning_score
-    board.values.map{|v| v.last}.max
+    scores.max
   end
 
-  def equal_scores_in_last_round?
+  def duplicate_winning_scores_in_last_round?
     return false if board.values.flatten.empty?
+    return false if last_scores.max != duplicate(last_scores)
 
     num_players = board.keys.count
-    scores = board.values.map{|v| v.last}
-    (1...num_players).include?(scores.uniq.count)
+    (1...num_players).include?(last_scores.uniq.count)
+  end
+
+  def duplicate(s)
+    s.detect{ |e| s.count(e) > 1 }
+  end
+
+  def last_scores
+    board.values.map{|v| v.last}
   end
 
   def initialize_score_board(player_ids=[])

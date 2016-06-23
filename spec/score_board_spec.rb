@@ -109,6 +109,17 @@ RSpec.describe ScoreBoard do
         scores.add(h)
         expect(scores.war?).to be false
       end
+
+      it 'returns false if there are matching scores in the last round but they are not the winning score' do
+        h = {}
+        h[p1.id] = [2, 14]
+        h[p2.id] = [8, 9]
+        h[p3.id] = [5, 9]
+
+        scores = ScoreBoard.new({player_ids: player_ids})
+        scores.add(h)
+        expect(scores.war?).to be false
+      end
     end
 
     describe 'true' do
@@ -120,7 +131,7 @@ RSpec.describe ScoreBoard do
         h
       end
 
-      it 'returns true if there are matching scores in the last round' do
+      it 'returns true if there are matching winning scores in the last round' do
         scores = ScoreBoard.new({player_ids: player_ids})
         scores.add(player_scores)
         expect(scores.war?).to be true
