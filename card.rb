@@ -30,6 +30,11 @@ class Card
     sort(cards).reverse
   end
 
+  def self.make(rank)
+    name = VALID_NAMES[VALID_RANKS.index(rank)]
+    Card.new({name: name, rank: rank})
+  end
+
   private
 
   def self.sort(cards)

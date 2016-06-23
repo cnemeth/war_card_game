@@ -35,6 +35,16 @@ RSpec.describe Card do
     end
   end
 
+  describe '#make' do
+    it 'makes card object based on rank' do
+      (2..14).each do |rank|
+        expect{
+          Card.make(rank)
+        }.to_not raise_error
+      end
+    end
+  end
+
   describe '#min' do
     let(:cards) { [ace, king, ten, two] }
 
