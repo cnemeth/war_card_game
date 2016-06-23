@@ -7,37 +7,29 @@ The Card Game War
 Introduction
 ------------
 
-The rules of the game can be found [here](https://www.pagat.com/war/war.html)
+This is a simple implementation of the War card game for 2, 3 or 4
+players.  The rules of the game can be found [here](https://www.pagat.com/war/war.html)
 
 Playing the game
 ----------------
 
-1. Clone repo, cd into project folder and start IRb
+1. Clone repo, cd into project folder and run bundle install.
 
 ```
 git clone git@github.com:cnemeth/war_card_game.git
+```
+
+2. cd into porject
+```
 cd war_card_game
-bundle
-rake spec
-irb
 ```
-
-2. Define number of players, 2 - 4, in a hash
-
+3. Install gems
 ```
-player_count = {num_players: 2}
+bundle install
 ```
-
-3. Initialize game
-
+4. Run game, n is the number of players (2, 3 or 4)
 ```
-game = War.new(player_count)
-```
-
-4. Start the game
-
-```
-game.play
+./war.rb n
 ```
 
 5. Sample Output
