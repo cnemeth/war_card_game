@@ -3,7 +3,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/player')
 require File.expand_path(File.dirname(__FILE__) + '/deck')
 require File.expand_path(File.dirname(__FILE__) + '/score_board')
-require 'pry'
 require 'awesome_print'
 
 puts 'Let the game begin! ... Onwards and Upwards!'
@@ -27,6 +26,10 @@ class War
     deal_cards
     loop do
       ap "+++[Beginning of loop] ..."
+      ap "+++[Players left in game] ... #{players.map(&:name)}"
+      players.each do |player|
+        ap "+++[Player #{player.name} has] ... #{player.cards.map(&:name)}"
+      end
 
       if game_over?
         puts "Game Over! The winner is #{players.first.name}"
@@ -34,7 +37,7 @@ class War
       end
 
       if player = player_any_no_card_left
-        ap "+++[Player #{player.name}] ... is being dropped"
+        ap "+++[The player #{player.name}] ... is being dropped because it has #{player.cards.count} cards left"
         drop(player)
       end
 
@@ -45,12 +48,10 @@ class War
         ap "+++[New draw, face down] ..."
         draw
       else
-        ap "+++[Players in system, in loop] ... #{players.map(&:id)}"
         player = round_winner
-        ap "+++[Player #{player.name}] ... is the winner of the last round"
+        puts "The round winner is #{player.name}, with card: #{winning_score}"
         ap "+++[Adding cards to #{player.name}] ... #{score_board.scores}"
         player.take_all(score_board.scores)
-        puts "The round winner is #{player.name}, with card: #{winning_score}"
         @score_board = initialize_score_board
       end
     end
