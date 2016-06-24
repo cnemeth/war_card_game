@@ -1,9 +1,11 @@
 #!/usr/bin/env ruby
 
 require File.expand_path(File.dirname(__FILE__) + '/player')
+require File.expand_path(File.dirname(__FILE__) + '/card')
 require File.expand_path(File.dirname(__FILE__) + '/deck')
 require File.expand_path(File.dirname(__FILE__) + '/score_board')
 require 'awesome_print'
+require 'pry'
 
 puts 'Let the game begin! ... Onwards and Upwards!'
 
@@ -19,17 +21,14 @@ class War
     @total_cards_in_play = num_players*(deck_count/num_players)
     @score_board = initialize_score_board
     @round_winner = nil
+    @counter = 1
   end
 
   def play
     shuffle_deck
     deal_cards
     loop do
-      ap "+++[Beginning of loop] ..."
-      ap "+++[Players left in game] ... #{players.map(&:name)}"
-      players.each do |player|
-        ap "+++[Player #{player.name} has] ... #{player.cards.map(&:name)}"
-      end
+      ap "+++[Beginning of loop] ...round no. #{@counter}"
 
       if game_over?
         puts "Game Over! The winner is #{players.first.name}"
@@ -41,6 +40,11 @@ class War
         drop(player)
       end
 
+      ap "+++[Players left in game] ... #{players.map(&:name)}"
+      players.each do |player|
+        ap "+++[Player #{player.name} has] ... #{player.cards.map(&:name)}, card count: #{player.cards.count}"
+      end
+
       ap "+++[New draw, face up] ..."
       draw
       if war?
@@ -49,11 +53,13 @@ class War
         draw
       else
         player = round_winner
-        puts "The round winner is #{player.name}, with card: #{winning_score}"
+        score = Card.name_for_rank(winning_score) if winning_score
+        puts "The round winner is #{player.name}, with card: #{score}"
         ap "+++[Adding cards to #{player.name}] ... #{score_board.scores}"
         player.take_all(score_board.scores)
         @score_board = initialize_score_board
       end
+      @counter += 1
     end
   end
 
@@ -88,7 +94,10 @@ class War
   end
 
   def draw
+    return if players.count == 1
+
     players.each do |player|
+      next if player.cards.empty?
       card = player.draw
       ap "+++[#{player.name} drew card]: #{card.name}"
       score_board.add_score(player.id, card.rank)
