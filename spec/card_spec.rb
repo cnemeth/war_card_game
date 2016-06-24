@@ -45,6 +45,12 @@ RSpec.describe Card do
     end
   end
 
+  describe '#name_for_rank' do
+    it 'returns the card name corresponding to the rank' do
+      expect(Card.name_for_rank(14)).to eq 'A'
+    end
+  end
+
   describe '#min' do
     let(:cards) { [ace, king, ten, two] }
 
