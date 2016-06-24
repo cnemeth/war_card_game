@@ -31,23 +31,14 @@ bundle install
 ```
 ./war.rb n
 ```
-
-5. Sample Output
-
+5. To run specs, comment out ARGV block in bottom of war.rb  (shown below) and run
+   `rake`
 ```
-...
-The round winner is Carlos, with score: 7
-The round winner is Carlos, with score: 13
-The round winner is Carlos, with score: 6
-The round winner is Dominique, with score: 13
-The round winner is Dominique, with score: 11
-War on!
-The round winner is Carlos, with score: 9
-The round winner is Carlos, with score: 3
-The round winner is Carlos, with score: 14
-War on!
-War on!
-Game Over! The winner is Carlos
+#ARGV.each do |v|
+#  num_players = (2..4).include?(v.to_i) ? v.to_i : 2
+#  game = War.new(num_players: num_players)
+#  game.play
+#end
 ```
 
 EOF
