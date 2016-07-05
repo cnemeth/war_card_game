@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-RSpec.describe ScoreBoard do
-  let(:p1) { Player.new }
-  let(:p2) { Player.new }
-  let(:p3) { Player.new }
+RSpec.describe CsnWar::ScoreBoard do
+  let(:p1) { CsnWar::Player.new }
+  let(:p2) { CsnWar::Player.new }
+  let(:p3) { CsnWar::Player.new }
   let(:players) { [p1, p2, p3] }
   let(:player_ids) { players.map(&:id) }
   let(:player_scores) do
@@ -23,14 +23,14 @@ RSpec.describe ScoreBoard do
   describe 'initialize' do
     it 'creates a scoreboard with players' do
       expect{
-        ScoreBoard.new(player_ids: player_ids)
+        CsnWar::ScoreBoard.new(player_ids: player_ids)
       }.to_not raise_error
     end
   end
 
   describe 'scores_for(player_id)' do
     it 'returns scores for a single player' do
-      score_board = ScoreBoard.new({player_ids: player_ids})
+      score_board = CsnWar::ScoreBoard.new({player_ids: player_ids})
       score_board.add_score(p1.id, 9)
       score_board.add_score(p1.id, 5)
       expect(score_board.scores_for(p1.id)).to match_array [9, 5]
@@ -39,7 +39,7 @@ RSpec.describe ScoreBoard do
 
   describe 'scores' do
     it 'returns scores for all players' do
-      score_board = ScoreBoard.new({player_ids: player_ids})
+      score_board = CsnWar::ScoreBoard.new({player_ids: player_ids})
       score_board.add(player_scores)
       expect(score_board.scores).to be_a_kind_of Array
       expect(score_board.scores).to_not be_empty
@@ -48,7 +48,7 @@ RSpec.describe ScoreBoard do
 
   describe 'adding score for single player' do
     it 'adds player score to board' do
-      score_board = ScoreBoard.new({player_ids: player_ids})
+      score_board = CsnWar::ScoreBoard.new({player_ids: player_ids})
       score_board.add_score(p1.id, 9)
       expect(score_board.board.values.flatten.first).to eq 9
     end
@@ -56,7 +56,7 @@ RSpec.describe ScoreBoard do
 
   describe 'adding scores for multiple players' do
     it 'adds palyer scores to board' do
-      score_board = ScoreBoard.new({player_ids: player_ids})
+      score_board = CsnWar::ScoreBoard.new({player_ids: player_ids})
       scores = score_board.add(player_scores)
       expect(scores).to be_a_kind_of Hash
       expect(scores.values).to be_a_kind_of Array
@@ -66,7 +66,7 @@ RSpec.describe ScoreBoard do
 
   describe 'clear' do
     it 'resets the score board to inital state' do
-      score_board = ScoreBoard.new({player_ids: player_ids})
+      score_board = CsnWar::ScoreBoard.new({player_ids: player_ids})
       scores = score_board.add(player_scores)
       expect(scores.values).to be_a_kind_of Array
       expect(scores.values.flatten).to_not be_empty
@@ -78,7 +78,7 @@ RSpec.describe ScoreBoard do
 
   describe 'drop_player' do
     it 'removes player with id' do
-      scores = ScoreBoard.new({player_ids: player_ids})
+      scores = CsnWar::ScoreBoard.new({player_ids: player_ids})
       expect(scores.board.keys.count).to eq 3
       scores.drop(p1.id)
       expect(scores.board.keys.count).to eq 2
@@ -94,7 +94,7 @@ RSpec.describe ScoreBoard do
         h[p2.id] = []
         h[p3.id] = []
 
-        scores = ScoreBoard.new(player_ids: player_ids)
+        scores = CsnWar::ScoreBoard.new(player_ids: player_ids)
         scores.add(h)
         expect(scores.war?).to be false
       end
@@ -105,7 +105,7 @@ RSpec.describe ScoreBoard do
         h[p2.id] = [9, 8]
         h[p3.id] = [5, 11]
 
-        scores = ScoreBoard.new({player_ids: player_ids})
+        scores = CsnWar::ScoreBoard.new({player_ids: player_ids})
         scores.add(h)
         expect(scores.war?).to be false
       end
@@ -116,7 +116,7 @@ RSpec.describe ScoreBoard do
         h[p2.id] = [8, 9]
         h[p3.id] = [5, 9]
 
-        scores = ScoreBoard.new({player_ids: player_ids})
+        scores = CsnWar::ScoreBoard.new({player_ids: player_ids})
         scores.add(h)
         expect(scores.war?).to be false
       end
@@ -132,7 +132,7 @@ RSpec.describe ScoreBoard do
       end
 
       it 'returns true if there are matching winning scores in the last round' do
-        scores = ScoreBoard.new({player_ids: player_ids})
+        scores = CsnWar::ScoreBoard.new({player_ids: player_ids})
         scores.add(player_scores)
         expect(scores.war?).to be true
       end
@@ -149,7 +149,7 @@ RSpec.describe ScoreBoard do
     end
 
     it 'returns the player with the highest score from the last round' do
-      scores = ScoreBoard.new({player_ids: player_ids})
+      scores = CsnWar::ScoreBoard.new({player_ids: player_ids})
       scores.add(player_scores)
       expect(scores.round_winner).to eq p2.id
     end
@@ -165,7 +165,7 @@ RSpec.describe ScoreBoard do
     end
 
     it 'returns the player with the highest score from the last round' do
-      scores = ScoreBoard.new({player_ids: player_ids})
+      scores = CsnWar::ScoreBoard.new({player_ids: player_ids})
       scores.add(player_scores)
       expect(scores.winning_score).to eq 14
     end

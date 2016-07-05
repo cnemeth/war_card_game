@@ -1,3 +1,9 @@
+PATH
+  remote: .
+  specs:
+    csn_war (0.0.0)
+      faker (~> 1.6)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -5,9 +11,11 @@ GEM
     byebug (9.0.5)
     coderay (1.1.1)
     diff-lcs (1.2.5)
+    docile (1.1.5)
     faker (1.6.3)
       i18n (~> 0.5)
     i18n (0.7.0)
+    json (1.8.3)
     method_source (0.8.2)
     pry (0.10.3)
       coderay (~> 1.1.0)
@@ -17,31 +25,41 @@ GEM
       byebug (~> 9.0)
       pry (~> 0.10)
     rake (11.2.2)
-    rspec (3.4.0)
-      rspec-core (~> 3.4.0)
-      rspec-expectations (~> 3.4.0)
-      rspec-mocks (~> 3.4.0)
-    rspec-core (3.4.4)
-      rspec-support (~> 3.4.0)
-    rspec-expectations (3.4.0)
+    rspec (3.5.0)
+      rspec-core (~> 3.5.0)
+      rspec-expectations (~> 3.5.0)
+      rspec-mocks (~> 3.5.0)
+    rspec-core (3.5.0)
+      rspec-support (~> 3.5.0)
+    rspec-expectations (3.5.0)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.4.0)
-    rspec-mocks (3.4.1)
+      rspec-support (~> 3.5.0)
+    rspec-mocks (3.5.0)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.4.0)
-    rspec-support (3.4.1)
+      rspec-support (~> 3.5.0)
+    rspec-support (3.5.0)
+    simplecov (0.11.2)
+      docile (~> 1.1.0)
+      json (~> 1.8)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.0)
     slop (3.6.0)
+    timecop (0.8.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  awesome_print
-  faker
-  pry
-  pry-byebug
-  rake
-  rspec
+  awesome_print (~> 1.6)
+  bundler (~> 1.11)
+  csn_war!
+  faker (~> 1.6)
+  pry (~> 0.10)
+  pry-byebug (~> 3.4)
+  rake (~> 11.2)
+  rspec (= 3.5)
+  simplecov (~> 0.10)
+  timecop (~> 0.8)
 
 BUNDLED WITH
    1.11.2
